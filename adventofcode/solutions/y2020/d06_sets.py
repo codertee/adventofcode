@@ -1,29 +1,31 @@
 from adventofcode.inputs import get_input
+from adventofcode.utils import aoc_timer
 
 
 def parse_input(input_str):
-    return input_str.split('\n\n')
+    groups = input_str.split('\n\n')
+    groups = map(str.split, groups)
+    return [list(map(set, g)) for g in groups]
 
 
-def solve_first(answers_lst):
-    counts = 0
-    for group in answers_lst:
-        group_count = set()
-        for person_answers in group.split():
-            group_count.update(person_answers)
-        counts += len(group_count)
-    print('2020.6 part one:', counts)
+def count_uniques(answer_sets):
+    unique_answers = set.union(*answer_sets)
+    return len(unique_answers)
 
 
-def solve_second(answers_lst):
-    counts = 0
-    for group in answers_lst:
-        group_lst = group.split()
-        group_count = set(group_lst[0])
-        for person_answers in group_lst[1:]:
-            group_count = group_count.intersection(person_answers)
-        counts += len(group_count)
-    print('2020.6 part two:', counts)
+def count_same(answer_sets):
+    same_answers = set.intersection(*answer_sets)
+    return len(same_answers)
+
+
+@aoc_timer(1, 6, 2020)
+def solve_first(groups):
+    return sum(map(count_uniques, groups))
+
+
+@aoc_timer(2, 6, 2020)
+def solve_second(groups):
+    return sum(map(count_same, groups))
 
 
 if __name__ == '__main__':
