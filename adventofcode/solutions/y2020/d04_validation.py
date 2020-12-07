@@ -1,23 +1,23 @@
 import re
+from functools import partial
 
 from adventofcode.inputs import get_input
+from adventofcode.utils import aoc_timer
+
+
+def parse_passport(passport_str):
+    return dict(token.split(':') for token in passport_str.split())
 
 
 def parse_input(input_str):
-    return input_str.split('\n\n')
+    return list(map(parse_passport, input_str.split('\n\n')))
 
 
+@aoc_timer(1, 4, 2020)
 def solve_first(passports):
     required_keys = {"byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"}
-    valid = 0
-    for passport_str in passports:
-        all_keys = set()
-        for token in passport_str.split():
-            field, value = token.split(':')
-            all_keys.add(field)
-        if required_keys.issubset(all_keys):
-            valid += 1
-    print('2020.4 part one:', valid)
+    validate = partial(set.issubset, required_keys)
+    return len(list(filter(validate, passports)))
 
 
 def validate_hgt(x):
@@ -55,16 +55,9 @@ def validate(passport):
     return True
 
 
+@aoc_timer(1, 4, 2020)
 def solve_second(passports):
-    valid = 0
-    for passport_str in passports:
-        passport = dict(
-            token.split(':')
-            for token in passport_str.split()
-        )
-        if validate(passport):
-            valid += 1
-    print('2020.4 part two:', valid)
+    return len(list(filter(validate, passports)))
 
 
 if __name__ == '__main__':
