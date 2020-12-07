@@ -29,4 +29,5 @@ def get_input(day: int, year: int = 2020):
             makedirs(input_dir)
         with open(input_path, 'wb') as f:
             f.write(input_str)
+            print(f'saved downloaded input to {input_path}')
         return input_str.decode()

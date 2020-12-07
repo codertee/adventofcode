@@ -11,3 +11,6 @@ Alternatively, you can set the session id as `python -m adventofcode -s <session
 - `adventofcode 6` solves day 6 of current challenges.
 - `adventofcode -y 2019` solves all 2019 challenges (currently not implemented).
 - `adventofcode -p 2` solves part two of all current challenges.
+## Inputs
+Downloaded challenge inputs are saved to a temporary directory using `tempfile.gettempdir`.
+It is possible to use custom directory with `python -m adventofcode -c <custom_dir>`.
