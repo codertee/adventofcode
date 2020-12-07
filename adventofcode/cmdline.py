@@ -29,14 +29,11 @@ def execute():
                      f'check network or session cookie')
         challenge_input = module.parse_input(input_str)
         if args.part == 0:
-            challenges.append((d, challenge_input, module.solve_first))
-            challenges.append((d, challenge_input, module.solve_second))
+            challenges.append((challenge_input, module.solve_first))
+            challenges.append((challenge_input, module.solve_second))
         elif args.part == 1:
-            challenges.append((d, challenge_input, module.solve_first))
+            challenges.append((challenge_input, module.solve_first))
         else:
-            challenges.append((d, challenge_input, module.solve_second))
-    for day, challenge_input, solve in challenges:
-        try:
-            solve(challenge_input)
-        except Exception as e:
-            print(f'exception when solving {year} day {d} challenge: {e}')
+            challenges.append((challenge_input, module.solve_second))
+    for challenge_input, solve in challenges:
+        solve(challenge_input)
