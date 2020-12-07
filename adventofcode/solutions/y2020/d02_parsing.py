@@ -33,8 +33,3 @@ if __name__ == '__main__':
     policies = parse_input(get_input(2, year=2020))
     solve_first(policies)
     solve_second(policies)
-
-
-
-
-

@@ -40,4 +40,3 @@ def execute():
             solve(challenge_input)
         except Exception as e:
             print(f'exception when solving {year} day {d} challenge: {e}')
-        

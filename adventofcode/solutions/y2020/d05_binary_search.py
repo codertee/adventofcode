@@ -23,6 +23,7 @@ def position(bpass):
     rows, columns = bpass[:7], bpass[7:]
     row = binary_search(list(reversed(rows)), 0, 127, 127, 'F')
     col = binary_search(list(reversed(columns)), 0, 7, 7, 'L')
+    print(int(rows.translate(str.maketrans('FB', '01')), 2), row)
     return row, col
 
 
