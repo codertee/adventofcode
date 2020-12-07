@@ -1,3 +1,4 @@
+import logging
 import time
 
 
@@ -12,7 +13,7 @@ def aoc_timer(part: int, day: int, year: int = 2020):
                 delta = (time.perf_counter() - start) * 1000
                 print(f'{identifier_str}: {result} ({delta:.4f} ms)')
             except Exception as e:
-                print(f'exception when solving {identifier_str} challenge: {e}')
+                logging.exception(f'exception when solving {identifier_str}: {e}')
             else:
                 return result
         return wrapper
