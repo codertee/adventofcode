@@ -1,6 +1,5 @@
-from functools import reduce
+import math
 from itertools import combinations, dropwhile
-from operator import mul
 
 from adventofcode.inputs import get_input
 from adventofcode.utils import aoc_timer
@@ -14,7 +13,7 @@ def parse_input(input_str):
 def solve(expenses, n):
     constraint = lambda x: sum(x) != 2020
     accepted_values = next(dropwhile(constraint, combinations(expenses, n)))
-    return reduce(mul, accepted_values)
+    return math.prod(accepted_values)
 
 
 @aoc_timer(1, 1, 2020)
