@@ -21,8 +21,10 @@ def solve_first(passports):
 
 
 def validate_hgt(x):
-    unit = x[-2:]
-    height = int(x[:-2])
+    m = re.match(r'(\d+)(in|cm)', x)
+    if not m:
+        return False
+    height, unit = int(m.group(1)), m.group(2)
     if unit == 'cm':
         return 150 <= height <= 193
     elif unit == 'in':
@@ -31,7 +33,7 @@ def validate_hgt(x):
         return False
 
 
-rules = {
+RULES = {
     "byr": lambda x: 1920 <= int(x) <= 2002,
     "iyr": lambda x: 2010 <= int(x) <= 2020,
     "eyr": lambda x: 2020 <= int(x) <= 2030,
@@ -43,14 +45,10 @@ rules = {
 
 
 def validate(passport):
-    for key, validate_f in rules.items():
-        value = passport.get(key)
-        if value is None:
+    for key, valid in RULES.items():
+        if key not in passport:
             return False
-        try:
-            if not validate_f(value):
-                return False
-        except Exception as e:
+        if not valid(passport[key]):
             return False
     return True
 
