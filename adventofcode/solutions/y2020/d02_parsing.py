@@ -9,7 +9,6 @@ def parse_policy(policy_str):
     return first, second, letter, password
 
 
-@aoc_timer()
 def parse_input(input_str):
     return list(map(parse_policy, input_str.splitlines()))
 

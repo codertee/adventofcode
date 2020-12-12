@@ -4,7 +4,6 @@ from adventofcode.inputs import get_input
 from adventofcode.utils import aoc_timer
 
 
-@aoc_timer()
 def parse_input(input_str):
     return input_str.splitlines()
 
