@@ -8,9 +8,9 @@ def run(code):
     seen = set()
     while True:
         if ptr == len(code):
-            return True, accumulator
+            return 0, accumulator
         if ptr in seen:
-            return False, accumulator
+            return 1, accumulator
         seen.add(ptr)
         instr, arg = code[ptr]
         if instr == 'acc':
@@ -45,7 +45,7 @@ def solve_second(code):
             elif instr == 'nop':
                 code[ptr] = 'jmp', arg
             retcode, retval = run(code)
-            if retcode:
+            if retcode == 0:
                 return retval
             else:
                 code[ptr] = instr, arg
