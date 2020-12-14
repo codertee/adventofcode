@@ -39,16 +39,17 @@ def solve_first(code):
 @aoc_timer(2, 8, 2020)
 def solve_second(code):
     for ptr, (instr, arg) in enumerate(code):
-        if instr in {'jmp', 'nop'}:
-            if instr == 'jmp':
-                code[ptr] = 'nop', arg
-            elif instr == 'nop':
-                code[ptr] = 'jmp', arg
-            retcode, retval = run(code)
-            if retcode == 0:
-                return retval
-            else:
-                code[ptr] = instr, arg
+        if instr not in {'jmp', 'nop'}:
+            continue
+        if instr == 'jmp':
+            code[ptr] = 'nop', arg
+        elif instr == 'nop':
+            code[ptr] = 'jmp', arg
+        retcode, retval = run(code)
+        if retcode == 0:
+            return retval
+        else:
+            code[ptr] = instr, arg
 
 
 if __name__ == '__main__':
