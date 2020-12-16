@@ -17,7 +17,6 @@ def parse_rule(rule_str):
     return color, dict(map(parse_constraint, constraints.split(', ')))
 
 
-@aoc_timer()
 def parse_input(input_str):
     return dict(map(parse_rule, input_str.splitlines()))
 
