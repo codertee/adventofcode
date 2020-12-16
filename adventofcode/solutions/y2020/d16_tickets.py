@@ -1,7 +1,5 @@
 import re
 from functools import partial
-from itertools import count
-from pprint import pprint
 
 from adventofcode.inputs import get_input
 from adventofcode.utils import aoc_timer
@@ -69,8 +67,8 @@ def solve_second(args):
             if len(headers) != 1:
                 continue
             header = headers.pop()
-            for headers_ in header_sets:
-                headers_.difference_update({header})
+            for _headers in header_sets:
+                _headers.difference_update({header})
             header_mapping[col] = header
     result = 1
     for col, header in header_mapping.items():
