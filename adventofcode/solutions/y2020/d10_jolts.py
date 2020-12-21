@@ -19,11 +19,11 @@ def solve_first(jolts):
 
 
 @aoc_timer(2, 10, 2020)
-def solve_second(jolts_lst):
+def solve_second(jolts):
     cache = defaultdict(int, {0: 1})
-    for j in jolts_lst[1:]:
+    for j in jolts[1:]:
         cache[j] = sum(cache[i] for i in range(j - 3, j))
-    return cache[jolts_lst[-1]]
+    return cache[jolts[-1]]
 
 
 if __name__ == '__main__':
