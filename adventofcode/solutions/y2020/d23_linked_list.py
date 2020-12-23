@@ -11,7 +11,7 @@ class Cup:
 
 
 def play(cups: list, turns=100):
-    max_val = max(cups)
+    modulus = len(cups) + 1
     cup = Cup(cups[-1])
     cups_map = {}
     for val in cups[::-1]:
@@ -22,9 +22,7 @@ def play(cups: list, turns=100):
         selected_val = current.v - 1
         unselectable = {one.v, two.v, three.v, 0}
         while selected_val in unselectable:
-            selected_val -= 1
-            if selected_val < 1:
-                selected_val = max_val
+            selected_val = (selected_val - 1) % modulus
         selected = cups_map[selected_val]
         current.n = three.n
         three.n = selected.n
