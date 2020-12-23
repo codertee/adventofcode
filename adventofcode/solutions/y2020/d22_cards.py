@@ -16,9 +16,7 @@ def play(p1, p2, recursive=False):
         if recursive and len(p1) >= c1 and len(p2) >= c2:
             new_p1 = deque(list(p1)[:c1])
             new_p2 = deque(list(p2)[:c2])
-            # should call play(new_p1, new_p1, recursive=True), but gives 
-            # correct answer without next recursions and is much faster
-            p1_wins = play(new_p1, new_p2)[0]
+            p1_wins = max(new_p1) > max(new_p2) or play(new_p1, new_p2, True)[0]
         else:
             p1_wins = c1 > c2
         if p1_wins:
