@@ -12,8 +12,7 @@ class Cup:
 
 def play(cups: list, turns=100):
     modulus = len(cups) + 1
-    cup = Cup(cups[-1])
-    cups_map = {}
+    cup, cups_map = None, {}
     for val in cups[::-1]:
         cup = cups_map[val] = Cup(val, cup)
     current = cups_map[cups[-1]].n = cup
