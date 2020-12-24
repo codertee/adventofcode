@@ -44,9 +44,8 @@ def parse_input(input_str):
     tiles = defaultdict(bool)
     regex = re.compile(r'e|se|sw|w|nw|ne')
     for line in input_str.splitlines():
-        directions = regex.findall(line)
         position = (0, 0, 0)
-        for direction in directions:
+        for direction in regex.findall(line):
             move = MOVES[direction]
             position = tuple(map(sum, zip(position, move)))
         tiles[position] = not tiles[position]
