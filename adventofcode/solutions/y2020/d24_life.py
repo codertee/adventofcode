@@ -16,28 +16,25 @@ def solve_first(tiles):
     return len(tiles)
 
 
-def neighbours(coords):
-    for delta in MOVES.values():
-        yield tuple(map(sum, zip(coords, delta)))
-
-
 @aoc_timer(2, 24, 2020)
 def solve_second(tiles):
+    deltas = tuple(MOVES.values())
     for _ in range(100):
         counter = Counter(
-            neighbour
+            neighbour(coords, delta)
             for coords in tiles
-            for neighbour in neighbours(coords)
+            for delta in deltas
         )
         tiles = set(
             coords
             for coords, nbrs in counter.items()
-            if (
-                (coords in tiles and not (nbrs == 0 or nbrs > 2)) 
-                or (coords not in tiles and nbrs == 2)
-            )
+            if nbrs == 2 or (nbrs == 1 and coords in tiles)
         )
     return len(tiles)
+
+
+def neighbour(coords, delta):
+    return tuple(map(sum, zip(coords, delta)))
 
 
 def parse_input(input_str):
@@ -46,8 +43,7 @@ def parse_input(input_str):
     for line in input_str.splitlines():
         position = (0, 0, 0)
         for direction in regex.findall(line):
-            move = MOVES[direction]
-            position = tuple(map(sum, zip(position, move)))
+            position = neighbour(position, MOVES[direction])
         tiles[position] = not tiles[position]
     return set(filter(tiles.get, tiles))
 
