@@ -50,7 +50,7 @@ def parse_input(input_str):
             move = MOVES[direction]
             position = tuple(map(sum, zip(position, move)))
         tiles[position] = not tiles[position]
-    return set(filter(lambda x: tiles[x], tiles))
+    return set(filter(tiles.get, tiles))
 
 
 if __name__ == '__main__':
