@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='adventofcode',
-    version='0.2020.6',
+    version='0.2022.0',
     project_urls={
         'Source': 'https://github.com/codertee/adventofcode',
     },
@@ -16,5 +16,5 @@ setup(
     entry_points={
         'console_scripts': ['adventofcode = adventofcode.cmdline:execute']
     },
-    python_requires='>=3.8'
+    python_requires='>=3.11'
 )
