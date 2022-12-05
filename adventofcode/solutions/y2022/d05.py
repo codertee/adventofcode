@@ -16,26 +16,26 @@ def parse_input(input_str):
         stacks[key] = stack
     operations = []
     for o in operations_str.splitlines():
-        amount, key, to = re.findall(r'(\d+) from (\d+) to (\d+)', o).pop()
-        operations.append((int(amount), key, to))
+        amount, one, other = re.findall(r'(\d+) from (\d+) to (\d+)', o).pop()
+        operations.append((int(amount), one, other))
     return stacks, operations
 
 
 @aoc_timer(1, 5, 2022)
 def solve_first(stacks, ops):
     stacks = deepcopy(stacks)
-    for amount, key, to in ops:
+    for amount, one, other in ops:
         for _ in range(amount):
-            stacks[to].append(stacks[key].pop())
+            stacks[other].append(stacks[one].pop())
     return ''.join(map(list.pop, stacks.values()))
 
 
 @aoc_timer(2, 5, 2022)
 def solve_second(stacks, ops):
-    for amount, key, to in ops:
-        take_from = stacks[key]
-        stacks[to].extend(take_from[-amount:])
-        stacks[key] = take_from[:-amount]
+    for amount, one, other in ops:
+        take_from = stacks[one]
+        stacks[other].extend(take_from[-amount:])
+        stacks[one] = take_from[:-amount]
     return ''.join(map(list.pop, stacks.values()))
 
 
