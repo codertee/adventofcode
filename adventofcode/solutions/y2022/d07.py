@@ -5,24 +5,22 @@ from adventofcode.utils import aoc_timer
 
 
 def parse_input(input_str):
-    dirs = Counter()
-    cwd = []
-    command = ''
+    dirs, cwd = Counter(), []
     for line in input_str.splitlines():
-        if line.startswith('dir'):
-            continue
-        if line.startswith('$'):
-            _, command, *args = line.split()
-            if command == 'cd':
-                arg = args.pop()
-                if arg == '..':
-                    cwd.pop()
-                else:
-                    cwd.append(arg)
-        elif command == 'ls':
-            size = int(line.split()[0])
-            for i in range(len(cwd)):
-                dirs[tuple(cwd[:i + 1])] += size
+        match line.split():
+            case ('$', 'cd', '..'):
+                cwd.pop()
+            case ('$', 'cd', name):
+                cwd.append(name)
+            case ('$', 'ls'):
+                continue
+            case ('dir', _):
+                continue
+            case (size, _):
+                size = int(size)
+                for i in range(len(cwd)):
+                    hashable = tuple(cwd[:i + 1])
+                    dirs[hashable] += size
     return dirs
 
 
@@ -35,8 +33,7 @@ def solve_first(dirs):
 @aoc_timer(2, 7, 2022)
 def solve_second(dirs):
     used = dirs[("/",)]
-    free = 70000000 - used
-    enough = 30000000 - free
+    enough = 30000000 - (70000000 - used)
     for size in sorted(dirs.values()):
         if size >= enough:
             return size
