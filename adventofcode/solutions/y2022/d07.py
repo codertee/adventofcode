@@ -12,9 +12,7 @@ def parse_input(input_str):
                 cwd.pop()
             case ('$', 'cd', name):
                 cwd.append(name)
-            case ('$', 'ls'):
-                continue
-            case ('dir', _):
+            case ('$', 'ls') | ('dir', _):
                 continue
             case (size, _):
                 size = int(size)
