@@ -26,17 +26,14 @@ def parse_input(input_str):
 
 @aoc_timer(1, 7, 2022)
 def solve_first(dirs):
-    sizes = dirs.values()
-    return sum(filter(lambda s: s <= 100000, sizes))
+    return sum(filter(lambda s: s <= 100000, dirs.values()))
 
 
 @aoc_timer(2, 7, 2022)
 def solve_second(dirs):
-    used = dirs[("/",)]
+    used = dirs[('/',)]
     enough = 30000000 - (70000000 - used)
-    for size in sorted(dirs.values()):
-        if size >= enough:
-            return size
+    return min(filter(lambda s: s >= enough, dirs.values()))
 
 
 if __name__ == '__main__':
