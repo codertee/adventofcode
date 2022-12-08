@@ -1,4 +1,3 @@
-from uuid import uuid4
 from itertools import product
 
 from adventofcode.inputs import get_input
@@ -17,7 +16,6 @@ class Tree(int):
             self.checked = True
             return 1
         return 0
-
 
 
 def parse_input(input_str):
