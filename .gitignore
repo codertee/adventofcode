@@ -1,5 +1,6 @@
 .venv
 .vscode
+.pylintrc
 __pycache__
 build
 dist
