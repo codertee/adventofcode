@@ -7,9 +7,22 @@ from adventofcode.utils import aoc_timer
 MAX_HEIGHT = 9
 
 
+class Tree(int):
+    def __new__(cls, value):
+        cls.checked = False
+        return super(cls, cls).__new__(cls, value)
+    
+    def seen(self):
+        if not self.checked:
+            self.checked = True
+            return 1
+        return 0
+
+
+
 def parse_input(input_str):
     return [
-        list(map(int, trees))
+        list(map(Tree, trees))
         for trees in input_str.splitlines()
     ]
 
@@ -19,23 +32,20 @@ def rotate(grid):
 
 
 @aoc_timer(1, 8, 2022)
-def solve_first(grid_orig):
-    grid = []
-    for trees in grid_orig:
-        grid.append([(t, uuid4()) for t in trees])
-    seen = set()
+def solve_first(grid):
+    count = 0
     for _ in range(4):
         for row in grid:
-            tallest, uid = row[0]
-            seen.add(uid)
-            for tree, uid in row[1:]:
+            tallest = row[0]
+            count += tallest.seen()
+            for tree in row[1:]:
                 if tallest == MAX_HEIGHT:
                     break
                 if tree > tallest:
-                    seen.add(uid)
+                    count += tree.seen()
                     tallest = tree
         grid = rotate(grid)
-    return len(seen)
+    return count
 
 
 def count_trees(r, c, dr, dc, condition, grid):
