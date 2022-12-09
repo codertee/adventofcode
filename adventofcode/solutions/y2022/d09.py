@@ -5,6 +5,14 @@ from adventofcode.inputs import get_input
 from adventofcode.utils import aoc_timer
 
 
+def parse_input(input_str):
+    moves = []
+    for line in input_str.splitlines():
+        direction, n = line.split()
+        moves.append((direction, int(n)))
+    return moves
+
+
 @dataclass
 class Segment:
     x = 0
@@ -30,14 +38,6 @@ class Segment:
         if  abs(dx) > 1 or abs(dy) > 1:
             other.x += self.sign(dx)
             other.y += self.sign(dy)
-
-
-def parse_input(input_str):
-    moves = []
-    for line in input_str.splitlines():
-        direction, n = line.split()
-        moves.append((direction, int(n)))
-    return moves
 
 
 def solve(moves, length):
