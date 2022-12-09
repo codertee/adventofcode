@@ -46,18 +46,18 @@ def solve_first(grid):
     return count
 
 
-def count_trees(r, c, dr, dc, condition, grid):
+def count_trees(r, c, dr, dc, grid):
+    height = grid[r][c]
     boundary = len(grid[0]) - 1
     count = 0
     while True:
         r += dr
         c += dc
         if r < 0 or c < 0 or r > boundary or c > boundary:
-            break
+            return count
         count += 1
-        if grid[r][c] >= condition:
-            break
-    return count
+        if grid[r][c] >= height:
+            return count
 
 
 @aoc_timer(2, 8, 2022)
@@ -65,11 +65,10 @@ def solve_second(grid):
     grid_length = len(grid[0])
     best = 0
     for i, j in product(range(grid_length), repeat=2):
-        tree = grid[i][j]
-        e = count_trees(i, j, 0, 1, tree, grid)
-        w = count_trees(i, j, 0, -1, tree, grid)
-        s = count_trees(i, j, 1, 0, tree, grid)
-        n = count_trees(i, j, -1, 0, tree, grid)
+        e = count_trees(i, j, 0, 1, grid)
+        w = count_trees(i, j, 0, -1, grid)
+        s = count_trees(i, j, 1, 0, grid)
+        n = count_trees(i, j, -1, 0, grid)
         score = n * w * s * e
         if score > best:
             best = score
