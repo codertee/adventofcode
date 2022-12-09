@@ -3,9 +3,7 @@ from adventofcode.utils import aoc_timer
 
 
 def parse_input(input_str):
-    strategy = map(str.split, input_str.splitlines())
-    strategy = map(tuple, strategy)
-    return list(strategy)
+    return input_str.splitlines()
 
 
 ROCK, PAPER, SCISSORS = 1, 2, 3
@@ -13,43 +11,26 @@ LOSE, DRAW, WIN = 0, 3, 6
 
 
 @aoc_timer(1, 2, 2022)
-def solve_first(strategy):
-    decrypt = {
-        'A': ROCK, 'B': PAPER, 'C': SCISSORS,
-        'X': ROCK, 'Y': PAPER, 'Z': SCISSORS
+def solve_first(turns):
+    lookup = {
+        'A X': ROCK + DRAW, 'A Y': PAPER + WIN, 'A Z': SCISSORS + LOSE,
+        'B X': ROCK + LOSE, 'B Y': PAPER + DRAW, 'B Z': SCISSORS + WIN,
+        'C X': ROCK + WIN, 'C Y': PAPER + LOSE, 'C Z': SCISSORS + DRAW
     }
-    wins = {(ROCK, SCISSORS), (PAPER, ROCK), (SCISSORS, PAPER)}
-    score = 0
-    for elf, player in strategy:
-        elf, player = decrypt[elf], decrypt[player]
-        score += player
-        if (player, elf) in wins:
-            score += WIN
-        elif player == elf:
-            score += DRAW
-    return score
+    return sum(map(lookup.get, turns))
 
 
 @aoc_timer(2, 2, 2022)
-def solve_second(strategy):
-    decrypt = {
-        'A': ROCK, 'B': PAPER, 'C': SCISSORS,
-        'X': LOSE, 'Y': DRAW, 'Z': WIN
+def solve_second(turns):
+    lookup = {
+        'A X': LOSE + SCISSORS, 'A Y': DRAW + ROCK, 'A Z': WIN + PAPER,
+        'B X': LOSE + ROCK, 'B Y': DRAW + PAPER, 'B Z': WIN + SCISSORS,
+        'C X': LOSE + PAPER, 'C Y': DRAW + SCISSORS, 'C Z': WIN + ROCK
     }
-    choices = {
-        (PAPER, LOSE): ROCK, (ROCK, DRAW): ROCK, (SCISSORS, WIN): ROCK,
-        (SCISSORS, LOSE): PAPER, (PAPER, DRAW): PAPER, (ROCK, WIN): PAPER,
-        (ROCK, LOSE): SCISSORS, (SCISSORS, DRAW): SCISSORS, (PAPER, WIN): SCISSORS,
-    }
-    score = 0
-    for elf, player in strategy:
-        elf, player = decrypt[elf], decrypt[player]
-        score += player
-        score += choices[(elf, player)]
-    return score
+    return sum(map(lookup.get, turns))
 
 
 if __name__ == '__main__':
-    strategy = parse_input(get_input(2, year=2022))
-    solve_first(strategy)
-    solve_second(strategy)
+    turns = parse_input(get_input(2, year=2022))
+    solve_first(turns)
+    solve_second(turns)
