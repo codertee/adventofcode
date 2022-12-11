@@ -49,8 +49,8 @@ def solve(monkeys, N, partfunc):
         for m in monkeys:
             while m.items:
                 item = m.items.popleft()
-                success = partfunc(m.op(item)) % m.test == 0
-                other = m.true if success else m.false
+                item = partfunc(m.op(item))
+                other = m.true if item % m.test == 0 else m.false
                 monkeys[other].items.append(item)
                 m.inspections += 1
 
