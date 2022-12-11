@@ -9,8 +9,7 @@ from adventofcode.inputs import get_input
 from adventofcode.utils import aoc_timer
 
 
-REGULAR_MONKEY = re.compile(
-r"""
+REGULAR_MONKEY = re.compile(r"""
   Starting items: (?P<items>[\d, ]+)
   Operation: new = old (?P<op>[*+]) (?P<arg>\d+|old)
   Test: divisible by (?P<test>\d+)
