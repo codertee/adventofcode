@@ -4,6 +4,9 @@ from dataclasses import dataclass
 from adventofcode.inputs import get_input
 from adventofcode.utils import aoc_timer
 
+def sign(x):
+    return (x > 0) - (x < 0)
+
 
 def parse_input(input_str):
     moves = []
@@ -15,8 +18,8 @@ def parse_input(input_str):
 
 @dataclass
 class Segment:
-    x = 0
-    y = 0
+    x: int = 0
+    y: int = 0
 
     def move(self, direction):
         match direction:
@@ -28,16 +31,12 @@ class Segment:
                 self.y -= 1
             case 'L':
                 self.x -= 1
-    
-    @staticmethod
-    def sign(x):
-        return (x > 0) - (x < 0)
 
     def drag(self, other):
         dx, dy = self.x - other.x, self.y - other.y
         if  abs(dx) > 1 or abs(dy) > 1:
-            other.x += self.sign(dx)
-            other.y += self.sign(dy)
+            other.x += sign(dx)
+            other.y += sign(dy)
 
 
 def solve(moves, length):
