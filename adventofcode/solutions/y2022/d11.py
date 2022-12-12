@@ -12,27 +12,24 @@ from adventofcode.utils import aoc_timer
 REGULAR_MONKEY = re.compile(r"""
   Starting items: (?P<items>[\d, ]+)
   Operation: new = old (?P<op>[*+]) (?P<arg>\d+|old)
-  Test: divisible by (?P<test>\d+)
+  Test: divisible by (?P<div>\d+)
     If true: throw to monkey (?P<true>\d+)
     If false: throw to monkey (?P<false>\d+)""")
 
 
 class Monkey:
-    """field names correspond to regex group names"""
-    __slots__ = ('items', 'op', 'test', 'true', 'false', 'inspections')
+    __slots__ = ('items', 'op', 'div', 'true', 'false', 'inspections')
 
-    def __init__(self, **kw):
-        items = kw['items'].split(', ')
-        self.items = deque(map(int, items))
-        self.test = int(kw['test'])
-        self.true = int(kw['true'])
-        self.false = int(kw['false'])
+    def __init__(self, items, op, arg, div, true, false):
+        self.items = deque(map(int, items.split(', ')))
+        self.div = int(div)
+        self.true = int(true)
+        self.false = int(false)
         self.inspections = 0
-        arg = kw['arg']
         if arg == 'old':
             self.op = lambda x: x * x
         else:
-            op = {'*': mul, '+': add}[kw['op']]
+            op = {'*': mul, '+': add}[op]
             self.op = partial(op, int(arg))
 
 
@@ -50,7 +47,7 @@ def solve(monkeys, N, partfunc):
             while m.items:
                 item = m.items.popleft()
                 item = partfunc(m.op(item))
-                other = m.true if item % m.test == 0 else m.false
+                other = m.true if item % m.div == 0 else m.false
                 monkeys[other].items.append(item)
                 m.inspections += 1
 
@@ -66,7 +63,7 @@ def solve_first(monkeys):
 
 @aoc_timer(2, 11, 2022)
 def solve_second(monkeys):
-    multiple = lcm(*(m.test for m in monkeys))
+    multiple = lcm(*(m.div for m in monkeys))
     return solve(monkeys, 10000, lambda x: x % multiple)
 
 
