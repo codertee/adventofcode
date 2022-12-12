@@ -4,6 +4,20 @@ from adventofcode.inputs import get_input
 from adventofcode.utils import aoc_timer
 
 
+def parse_line(line, can_contain=dict(), counts=Counter()):
+    ingredients, allergens = line.split(' (contains ')
+    ingredients = set(ingredients.split())
+    counts += Counter(ingredients)
+    for allergen in allergens.rstrip(')').split(', '):
+        checked = can_contain.get(allergen, ingredients)
+        can_contain[allergen] = checked & ingredients
+    return can_contain, counts
+
+
+def parse_input(input_str):
+    return list(map(parse_line, input_str.splitlines())).pop()
+
+
 @aoc_timer(1, 21, 2020)
 def solve_first(args):
     can_contain, counts = args
@@ -23,20 +37,6 @@ def solve_second(args):
             if len(diff) == 1:
                 allergic[diff.pop()] = allergen
     return ",".join(sorted(allergic, key=lambda ing: allergic[ing]))
-
-
-def parse_line(line, can_contain=dict(), counts=Counter()):
-    ingredients, allergens = line.split(' (contains ')
-    ingredients = set(ingredients.split())
-    counts += Counter(ingredients)
-    for allergen in allergens.rstrip(')').split(', '):
-        checked = can_contain.get(allergen, ingredients)
-        can_contain[allergen] = checked & ingredients
-    return can_contain, counts
-
-
-def parse_input(input_str):
-    return list(map(parse_line, input_str.splitlines())).pop()
 
 
 if __name__ == '__main__':
