@@ -1,5 +1,5 @@
 from collections import deque
-from itertools import product, chain
+from itertools import product
 
 from adventofcode.inputs import get_input
 from adventofcode.utils import aoc_timer
@@ -36,7 +36,6 @@ class Square:
                 neighbour = self.height - 1 <= other.height
             if neighbour:
                 yield other
-            
 
 
 def parse_input(input_str):
