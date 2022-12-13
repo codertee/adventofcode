@@ -60,10 +60,10 @@ def shortest_path(start, part):
     seen = set()
     while queue:
         square, distance = queue.popleft()
-        if part == 1 and square.end or part == 2 and square.height == MIN:
-            return distance
         if square in seen:
             continue
+        if part == 1 and square.end or part == 2 and square.height == MIN:
+            return distance
         seen.add(square)
         for s in square.neighbours(part):
             if s not in seen:
