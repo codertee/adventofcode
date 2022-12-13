@@ -3,7 +3,6 @@ from functools import cmp_to_key
 from itertools import chain
 
 
-
 from adventofcode.inputs import get_input
 from adventofcode.utils import aoc_timer
 
