@@ -13,7 +13,7 @@ def sign(x, y):
 def fill_line(start, end):
     (x, y), (x2, y2) = start, end
     dx, dy = sign(x, x2), sign(y, y2)
-    while (x, y) != (x2, y2):
+    while (x, y) != end:
         x, y = x + dx, y + dy
         yield x, y
 
