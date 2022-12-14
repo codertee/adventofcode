@@ -42,10 +42,12 @@ def solve(blocked, floor, part):
                     return c
                 blocked.add((x, y))
                 break
-            for step in (x, y + 1), (x - 1, y + 1), (x + 1, y + 1):
-                if step not in blocked:
-                    x, y = step
-                    break
+            if (step := (x, y + 1)) not in blocked:
+                x, y = step
+            elif (step := (x - 1, y + 1)) not in blocked:
+                x, y = step
+            elif (step := (x + 1, y + 1)) not in blocked:
+                x, y = step
             else:
                 blocked.add((x, y))
                 break
