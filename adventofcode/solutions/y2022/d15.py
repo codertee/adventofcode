@@ -1,5 +1,7 @@
 import re
+from functools import partial
 from math import inf
+from multiprocessing import Pool
 
 from adventofcode.inputs import get_input
 from adventofcode.utils import aoc_timer
@@ -40,16 +42,17 @@ def solve(sensors, y):
     prev_x2 = ranges[0][1]
     for x1, x2 in ranges[1:]:
         if x1 > prev_x2:
-            return prev_x2 + 1
+            return prev_x2 + 1, y
         prev_x2 = max(x2, prev_x2)
     return False
 
 
 @aoc_timer(2, 15, 2022)
 def solve_second(sensors):
-    for y in range(4_000_000):
-        if x := solve(sensors, y):
-            return x * 4_000_000 + y
+    with Pool() as p:
+        results = p.map(partial(solve, sensors), range(4_000_000))
+        x, y = next(filter(bool, results))
+        return x * 4_000_000 + y
 
 
 if __name__ == '__main__':
