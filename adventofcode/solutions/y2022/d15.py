@@ -37,16 +37,11 @@ def solve(sensors, y):
         dx = r - dy
         ranges.append((sx - dx, sx + dx))
     ranges.sort()
-    min_x, max_x = ranges[0]
+    prev_x2 = ranges[0][1]
     for x1, x2 in ranges[1:]:
-        min_test = min_x - 1
-        if x1 < min_test and x2 < min_test:
-            return min_test
-        max_test = max_x + 1
-        if x1 > max_test and x2 > max_test:
-            return max_test
-        min_x = min(x1, min_x)
-        max_x = max(x2, max_x)
+        if x1 > prev_x2:
+            return prev_x2 + 1
+        prev_x2 = max(x2, prev_x2)
     return False
 
 
