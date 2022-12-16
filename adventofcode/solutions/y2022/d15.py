@@ -1,5 +1,6 @@
 import re
 from functools import partial
+from itertools import combinations
 from math import inf
 from multiprocessing import Pool
 
@@ -38,6 +39,8 @@ def solve(sensors, y):
             continue
         dx = r - dy
         ranges.append((sx - dx, sx + dx))
+    if len(ranges) < 4:
+        return
     ranges.sort()
     prev_x2 = ranges[0][1]
     for x1, x2 in ranges[1:]:
@@ -49,8 +52,18 @@ def solve(sensors, y):
 
 @aoc_timer(2, 15, 2022)
 def solve_second(sensors):
+    filtered_sensors = []
+    for one, other in combinations(sensors, 2):
+        (x1, y1, r1), (x2, y2, r2) = one, other
+        if abs(x1 - x2) + abs(y1 - y2) == r1 + r2 + 2:
+            filtered_sensors.extend([one, other])
+    filtered_sensors.sort(key=lambda x: x[2])
+    min_y, max_y = 4_000_000, 0
+    for _, y, _ in sensors:
+        min_y = min(min_y, y)
+        max_y = max(max_y, y)
     with Pool() as p:
-        results = p.map(partial(solve, sensors), range(4_000_000))
+        results = p.map(partial(solve, filtered_sensors), range(min_y, max_y))
         x, y = next(filter(bool, results))
         return x * 4_000_000 + y
 
