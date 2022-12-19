@@ -34,12 +34,12 @@ class Bounds:
         for c in cubes:
             mins = tuple(map(min, zip(c, mins)))
             maxs = tuple(map(max, zip(c, maxs)))
+        self.ranges = [set(range(lo - 1, hi + 2)) for lo, hi in zip(mins, maxs)]
         self.mins = mins
-        self.maxs = maxs
     
     def __contains__(self, coords):
-        for c, _min, _max in zip(coords, self.mins, self.maxs):
-            if not(_min - 1 <= c <= _max + 1):
+        for c, _range in zip(coords, self.ranges):
+            if c not in _range:
                 return False
         return True
 
