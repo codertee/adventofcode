@@ -12,8 +12,8 @@ def parse_input(input_str):
 def decimal(snafu: list[str]):
     if not snafu:
         return 0
-    tail = snafu.pop()
-    return 5 * decimal(snafu) + CHARMAP[tail]
+    last = snafu.pop()
+    return 5 * decimal(snafu) + CHARMAP[last]
 
 
 def snafu(dec: int):
