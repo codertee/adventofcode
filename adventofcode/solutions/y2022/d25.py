@@ -3,7 +3,6 @@ from adventofcode.utils import aoc_timer
 
 
 CHARMAP = {'=': -2, '-': -1, '0': 0, '1': 1, '2': 2}
-REMMAP = {v: k for k, v in CHARMAP.items()}
 
 
 def parse_input(input_str):
@@ -21,7 +20,7 @@ def snafu(dec: int):
     if not dec:
         return ''
     q, r = divmod(dec + 2, 5)
-    return snafu(q) + REMMAP[r - 2]
+    return snafu(q) + '=-012'[r]
 
 
 @aoc_timer(1, 25, 2022)
