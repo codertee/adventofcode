@@ -1,5 +1,5 @@
 from collections import defaultdict, deque
-from itertools import count, product, starmap
+from itertools import count, starmap
 from operator import add
 
 from adventofcode.inputs import get_input
@@ -19,7 +19,7 @@ DIRS = N, S, W, E, NE, NW, SE, SW = (
     V(-1, 0), V(1, 0), V(0, -1), V(0, 1),
     V(-1, 1), V(-1, -1), V(1, 1), V(1, -1)
 )
-CHECK = deque([(N, NE, NW), (S, SE, SW), (W, NW, SW), (E, NE, SE)])
+CHECK = deque([(0, 4, 5), (1, 6, 7), (2, 5, 7), (3, 4, 6)])
 
 
 def parse_input(input_str):
@@ -35,13 +35,13 @@ def simulate(elves, checks):
     moved = False
     proposals = defaultdict(list)
     for elf in elves:
-        if all(elf + d not in elves for d in DIRS):
+        free = [elf + delta not in elves for delta in DIRS]
+        if all(free):
             continue
         for left, mid, right in checks:
-            the_spot = elf + left
-            check = the_spot, elf + mid, elf + right
-            if all(spot not in elves for spot in check):
-                proposals[the_spot].append(elf)
+            if all((free[left], free[mid], free[right])):
+                proposal = elf + DIRS[left]
+                proposals[proposal].append(elf)
                 break
     for where, who in proposals.items():
         if len(who) > 1:
@@ -68,6 +68,7 @@ def solve_first(elves):
 
 @aoc_timer(2, 23, 2022)
 def solve_second(elves):
+    #return
     checks = CHECK.copy()
     for i in count(1):
         if not simulate(elves, checks):
