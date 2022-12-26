@@ -68,7 +68,6 @@ def solve_first(elves):
 
 @aoc_timer(2, 23, 2022)
 def solve_second(elves):
-    #return
     checks = CHECK.copy()
     for i in count(1):
         if not simulate(elves, checks):
