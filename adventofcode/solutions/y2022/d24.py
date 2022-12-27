@@ -31,13 +31,8 @@ def parse_input(input_str):
 
 
 def solve(blizzards, start, end, t=0):
-    q, seen = deque(), set()
+    q, seen = deque([(*start, t)]), set()
     while True:
-        while not q:
-            t += 1
-            state = *start, t
-            if blizzards.traversable(state):
-                q.append(state)
         r, c, t = q.popleft()
         if (r, c, t) in seen:
             continue
@@ -48,6 +43,8 @@ def solve(blizzards, start, end, t=0):
             state = r + dr, c + dc, t + 1
             if blizzards.traversable(state):
                 q.append(state)
+        if not q:
+            q.append((*start, t + 1))
 
 
 @aoc_timer(1, 24, 2022)
