@@ -11,7 +11,7 @@ class Blizzards:
         self.rows = len(grid)
         self.cols = len(grid[0])
 
-    def quiet(self, state):
+    def traversable(self, state):
         r, c, t = state
         return (
             0 <= r < self.rows and 0 <= c < self.cols and
@@ -30,13 +30,13 @@ def parse_input(input_str):
     return blizzards, start, end
 
 
-def solve(blizzards, t, start, end):
+def solve(blizzards, start, end, t=0):
     q, seen = deque(), set()
     while True:
         while not q:
             t += 1
             state = *start, t
-            if blizzards.quiet(state):
+            if blizzards.traversable(state):
                 q.append(state)
         r, c, t = q.popleft()
         if (r, c, t) in seen:
@@ -46,20 +46,20 @@ def solve(blizzards, t, start, end):
         seen.add((r, c, t))
         for dr, dc in (-1, 0), (0, 1), (1, 0), (0, -1), (0, 0):
             state = r + dr, c + dc, t + 1
-            if blizzards.quiet(state):
+            if blizzards.traversable(state):
                 q.append(state)
 
 
 @aoc_timer(1, 24, 2022)
 def solve_first(blizzards, start, end):
-    return solve(blizzards, 0, start, end)
+    return solve(blizzards, start, end)
 
 
 @aoc_timer(2, 24, 2022)
 def solve_second(blizzards, start, end):
-    split = solve(blizzards, 0, start, end)
-    split = solve(blizzards, split, end, start)
-    return solve(blizzards, split, start, end)
+    split = solve(blizzards, start, end)
+    split = solve(blizzards, end, start, t=split)
+    return solve(blizzards, start, end, t=split)
 
 
 if __name__ == '__main__':
