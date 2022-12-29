@@ -1,6 +1,6 @@
 import re
 from collections import namedtuple
-from itertools import combinations
+from itertools import combinations, product
 from math import inf
 
 from adventofcode.inputs import get_input
@@ -33,10 +33,6 @@ def solve_first(sensors):
     return max_x - min_x
 
 
-def sign(a, b):
-    return (a > b) - (a < b)
-
-
 def distance(one, other):
     return abs(one.x - other.x) + abs(one.y - other.y)
 
@@ -44,23 +40,24 @@ def distance(one, other):
 @aoc_timer(2, 15, 2022)
 def solve_second(sensors):
     one_away = []
+    a_coeffs, b_coeffs = set(), set()
     for one, other in combinations(sensors, 2):
         if distance(one, other) == one.radius + other.radius + 2:
             one_away += [one, other]
-    (x1, y1, r1), (x2, y2, _) = one_away[:2]
-    dx = sign(x1, x2)
-    dy = -sign(y1, y2)
-    x, y = x1 - dx * (r1 + 1), y1
-    for _ in range(r1 + 2):
+            for x, y, r in one, other:
+                a_coeffs.add(y - x + r + 1)
+                a_coeffs.add(y - x - r - 1)
+                b_coeffs.add(x + y + r + 1)
+                b_coeffs.add(x + y - r - 1)
+    for a, b in product(a_coeffs, b_coeffs):
+        x = (b - a) // 2
+        y = (a + b) // 2
         test = Sensor(x, y, 0)
         if all(
             distance(test, other) == other.radius + 1 
             for other in one_away
         ):
             return x * 4_000_000 + y
-        x += dx
-        y += dy
-    return "edge cases not handled"
 
 
 if __name__ == '__main__':
