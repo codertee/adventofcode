@@ -80,14 +80,14 @@ def solve_first(grid, start, path):
 @aoc_timer(2, 22, 2022)
 def solve_second(grid, start, path):
     PORTALS = {}
-    for from_corner, delta, step, to_corner, deltab, stepb, turn in [
-        (V(0, 50), EAST, NORTH, V(150, 0), SOUTH, WEST, 1),
-        (V(0, 100), EAST, NORTH, V(199, 0), EAST, SOUTH, 0),
-        (V(0, 149), SOUTH, EAST, V(149, 99), NORTH, EAST, 2),
-        (V(0, 50), SOUTH, WEST, V(149, 0), NORTH, WEST, 2),
-        (V(50, 50), SOUTH, WEST, V(100, 0), EAST, NORTH, 3),
-        (V(49, 100), EAST, SOUTH, V(50, 99), SOUTH, EAST, 1),
-        (V(149, 50), EAST, SOUTH, V(150, 49), SOUTH, EAST, 1)
+    for from_corner, delta, step,  to_corner,  deltab, stepb, turn in [
+        (V(0, 50),   EAST,  NORTH, V(150, 0),  SOUTH,  WEST,   1),
+        (V(0, 100),  EAST,  NORTH, V(199, 0),  EAST,   SOUTH,  0),
+        (V(0, 149),  SOUTH, EAST,  V(149, 99), NORTH,  EAST,   2),
+        (V(0, 50),   SOUTH, WEST,  V(149, 0),  NORTH,  WEST,   2),
+        (V(50, 50),  SOUTH, WEST,  V(100, 0),  EAST,   NORTH,  3),
+        (V(49, 100), EAST,  SOUTH, V(50, 99),  SOUTH,  EAST,   1),
+        (V(149, 50), EAST,  SOUTH, V(150, 49), SOUTH,  EAST,   1)
     ]:
         for i in range(50):
             entrance = from_corner + delta * i
