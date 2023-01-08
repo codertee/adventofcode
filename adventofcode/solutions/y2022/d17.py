@@ -61,7 +61,7 @@ def parse_input(input_str):
 
 
 def drop(rock, jets, pile, top):
-    for y in count(top - rock.len - 2):
+    for y in count(top - rock.len - 3):
         jet = next(jets)
         if rock.shiftable(jet.dir):
             shifted = rock.shift(jet.dir)
@@ -70,31 +70,29 @@ def drop(rock, jets, pile, top):
         if rock.overlaps(pile[y + 1:]) or rock.len + y >= len(pile):
             for i in range(rock.len):
                 pile[y + i] |= rock.ints[i]
-            while pile[top]:
-                top -= 1
-            return top, rock, jet
+            return min(top, y), rock, jet
 
 
 @aoc_timer(1, 17, 2022)
 def solve_first(jets):
     rocks, jets = cycle(ROCKS), cycle(jets)
     pile = [0] * 10000
-    top = len(pile) - 1
+    top = len(pile)
     for _ in range(2022):
         top, *_ = drop(next(rocks), jets, pile, top)
-    return len(pile) - top - 1
+    return len(pile) - top
 
 
 @aoc_timer(2, 17, 2022)
 def solve_second(jets):
     rocks, jets = cycle(ROCKS), cycle(jets)
     pile = [0] * 10000
-    top = len(pile) - 1
+    top = len(pile)
     heights, positions = [], []
     cycles = defaultdict(list)
     for n_rock in count():
         top, rock, jet = drop(next(rocks), jets, pile, top)
-        height = len(pile) - top - 1
+        height = len(pile) - top
         reps = cycles[(jet.i, rock.i)]
         for start, mid in pairwise(reps):
             if positions[start: mid] == positions[mid:]:
