@@ -1,5 +1,5 @@
-from itertools import count, cycle, pairwise, starmap
-from collections import namedtuple, defaultdict
+from itertools import count, cycle, starmap
+from collections import namedtuple
 from operator import lshift, rshift
 
 from adventofcode.inputs import get_input
@@ -60,48 +60,48 @@ def parse_input(input_str):
     return list(starmap(Jet, enumerate(input_str.strip())))
 
 
-def drop(rock, jets, pile, top):
-    for y in count(top - rock.len - 3):
-        jet = next(jets)
-        if rock.shiftable(jet.dir):
-            shifted = rock.shift(jet.dir)
-            if not shifted.overlaps(pile[y:]):
-                rock = shifted
-        if rock.overlaps(pile[y + 1:]) or rock.len + y >= len(pile):
-            for i in range(rock.len):
-                pile[y + i] |= rock.ints[i]
-            return min(top, y), rock, jet
-
-
-@aoc_timer(1, 17, 2022)
-def solve_first(jets):
-    rocks, jets = cycle(ROCKS), cycle(jets)
-    pile = [0] * 10000
-    top = len(pile)
-    for _ in range(2022):
-        top, *_ = drop(next(rocks), jets, pile, top)
-    return len(pile) - top
-
-
-@aoc_timer(2, 17, 2022)
-def solve_second(jets):
+def solve(jets, total=2022):
+    Previous = namedtuple('Previous', ['n', 'height'])
     rocks, jets = cycle(ROCKS), cycle(jets)
     pile = [0] * 10000
     top = len(pile)
     states = {}
+
     for n_rock in count():
-        top, rock, jet = drop(next(rocks), jets, pile, top)
+        rock = next(rocks)
+        for y in count(top - rock.len - 3):
+            jet = next(jets)
+            if rock.shiftable(jet.dir):
+                shifted = rock.shift(jet.dir)
+                if not shifted.overlaps(pile[y:]):
+                    rock = shifted
+            if rock.overlaps(pile[y + 1:]) or rock.len + y >= len(pile):
+                for i in range(rock.len):
+                    pile[y + i] |= rock.ints[i]
+                break
+        top = min(top, y)
         height = len(pile) - top
+
         state = (jet.i, rock.i, rock.pos)
         if prev := states.get(state):
-            rcycle = n_rock - prev[0]
-            hcycle = height - prev[1]
-            diff = int(1e12) - n_rock - 1
+            rcycle = n_rock - prev.n
+            hcycle = height - prev.height
+            diff = total - n_rock - 1
             more, remain = divmod(diff, rcycle)
             if remain == 0: 
                 return hcycle * more + height
         else:
-            states[state] = n_rock, height
+            states[state] = Previous(n_rock, height)
+
+
+@aoc_timer(1, 17, 2022)
+def solve_first(jets):
+    return solve(jets)
+
+
+@aoc_timer(2, 17, 2022)
+def solve_second(jets):
+    return solve(jets, int(1e12))
 
 
 if __name__ == '__main__':
