@@ -1,4 +1,4 @@
-from itertools import count, cycle, combinations, starmap
+from itertools import count, cycle, pairwise, starmap
 from collections import namedtuple, defaultdict
 from operator import lshift, rshift
 
@@ -101,7 +101,7 @@ def solve_second(jets):
         heights.append(height)
         positions.append(rock.pos)
         if c := cycles.get((jet.i, rock.i)):
-            for start, mid in combinations(c, 2):
+            for start, mid in pairwise(c):
                 if positions[start: mid] == positions[mid:]:
                     rcycle = n_rock - mid
                     hcycle = height - heights[mid - 1]
