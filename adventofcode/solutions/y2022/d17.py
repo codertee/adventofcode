@@ -9,17 +9,15 @@ from adventofcode.utils import aoc_timer
 class Rock:
     __slots__ = ['ints', 'len', 'i', 'pos']
 
-    def __init__(self, ints, i):
+    def __init__(self, ints, i, pos=0b0010000):
         self.ints = ints
         self.len = len(self.ints)
         self.i = i
-        self.pos = 0b0010000
+        self.pos = pos
     
-    def shift(self, direction):
-        op = {'>': rshift, '<': lshift}[direction]
-        r = Rock([op(i, 1) for i in self.ints], self.i)
-        r.pos = op(self.pos, 1)
-        return r
+    def shift(self, jet):
+        op = {'>': rshift, '<': lshift}[jet]
+        return Rock([op(i, 1) for i in self.ints], self.i, op(self.pos, 1))
     
     def overlaps(self, pile):
         for i, layer in zip(self.ints, pile):
@@ -63,8 +61,7 @@ def parse_input(input_str):
 
 
 def drop(rock, jets, pile, top):
-    top -= (2 + rock.len)
-    for y in count(top):
+    for y in count(top - rock.len - 2):
         jet = next(jets)
         if rock.shiftable(jet.dir):
             shifted = rock.shift(jet.dir)
@@ -73,9 +70,9 @@ def drop(rock, jets, pile, top):
         if rock.overlaps(pile[y + 1:]) or rock.len + y >= len(pile):
             for i in range(rock.len):
                 pile[y + i] = pile[y + i] | rock.ints[i]
-            while pile[top] == 0:
-                top += 1
-            return top - 1, rock, jet
+            while pile[top]:
+                top -= 1
+            return top, rock, jet
 
 
 @aoc_timer(1, 17, 2022)
