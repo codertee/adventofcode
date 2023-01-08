@@ -93,21 +93,22 @@ def solve_second(jets):
     rocks, jets = cycle(ROCKS), cycle(jets)
     pile = [0] * 10000
     top = len(pile) - 1
-    positions, heights = [], []
+    heights, positions = [], []
     cycles = defaultdict(list)
-    for n_rock in count(1):
+    for n_rock in count():
         top, rock, jet = drop(next(rocks), jets, pile, top)
         height = len(pile) - top - 1
+        reps = cycles[(jet.i, rock.i)]
+        for start, mid in pairwise(reps):
+            if positions[start: mid] == positions[mid:]:
+                rcycle = n_rock - mid
+                hcycle = height - heights[mid]
+                diff = int(1e12) - mid - 1
+                more, remain = divmod(diff, rcycle)
+                return more * hcycle + heights[mid + remain]
+        reps.append(n_rock)
         heights.append(height)
         positions.append(rock.pos)
-        if c := cycles.get((jet.i, rock.i)):
-            for start, mid in pairwise(c):
-                if positions[start: mid] == positions[mid:]:
-                    rcycle = n_rock - mid
-                    hcycle = height - heights[mid - 1]
-                    more, remain = divmod(int(1e12) - mid, rcycle)
-                    return more * hcycle + heights[mid - 1 + remain]
-        cycles[(jet.i, rock.i)].append(n_rock)
 
 
 if __name__ == '__main__':
