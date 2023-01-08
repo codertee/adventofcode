@@ -69,7 +69,7 @@ def drop(rock, jets, pile, top):
                 rock = shifted
         if rock.overlaps(pile[y + 1:]) or rock.len + y >= len(pile):
             for i in range(rock.len):
-                pile[y + i] = pile[y + i] | rock.ints[i]
+                pile[y + i] |= rock.ints[i]
             while pile[top]:
                 top -= 1
             return top, rock, jet
