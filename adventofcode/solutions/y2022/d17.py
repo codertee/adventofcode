@@ -61,7 +61,7 @@ def parse_input(input_str):
 
 
 def solve(jets, total=2022):
-    Previous = namedtuple('Previous', ['n', 'height'])
+    Previous = namedtuple('Previous', ['rock', 'height'])
     rocks, jets = cycle(ROCKS), cycle(jets)
     pile = [0] * 10000
     top = len(pile)
@@ -84,7 +84,7 @@ def solve(jets, total=2022):
 
         state = (jet.i, rock.i, rock.pos)
         if prev := states.get(state):
-            rcycle = n_rock - prev.n
+            rcycle = n_rock - prev.rock
             hcycle = height - prev.height
             diff = total - n_rock - 1
             more, remain = divmod(diff, rcycle)
