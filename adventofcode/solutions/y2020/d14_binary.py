@@ -1,5 +1,23 @@
+from itertools import product
+
 from adventofcode.inputs import get_input
 from adventofcode.utils import aoc_timer
+
+
+def parse(line):
+    match line.split(' = '):
+        case 'mask', val:
+            return 'mask', val
+        case arg, val:
+            return int(arg[4:-1]), int(val)
+
+
+def parse_input(input_str):
+    return list(map(parse, input_str.splitlines()))
+
+
+def bitstring(x, l):
+    return bin(x)[2:].zfill(l)
 
 
 @aoc_timer(1, 14, 2020)
@@ -9,8 +27,8 @@ def solve_first(code):
         if instr == 'mask':
             mask = val
             continue
-        value = bitstring(int(val), len(mask))
-        value = (v if m == 'X' else m for v, m in zip(value, mask))
+        value = bitstring(val, len(mask))
+        value = (m == 'X' and v or m for v, m in zip(value, mask))
         value = int(''.join(value), 2)
         mem[instr] = value
     return sum(mem.values())
@@ -24,36 +42,14 @@ def solve_second(code):
             mask = val
             continue
         addr = bitstring(instr, len(mask))
-        addr_template = ''
+        template = ''
         for mask_bit, addr_bit in zip(mask, addr):
-            if mask_bit == "0":
-                addr_template += addr_bit
-            elif mask_bit == "1":
-                addr_template += "1"
-            else:
-                addr_template += "{}"
-        floating_length = mask.count('X')
-        for f in range(2 ** floating_length):
-            addr = addr_template.format(*bitstring(f, floating_length))
-            addr = int(addr, 2)
-            mem[addr] = int(val)
+            charmap = {'0': addr_bit, '1': '1', 'X': '{}'}
+            template += charmap[mask_bit]
+        for fill in product('01', repeat=mask.count('X')):
+            addr = int(template.format(*fill), 2)
+            mem[addr] = val
     return sum(mem.values())
-
-
-def bitstring(x, l):
-    return bin(x)[2:].zfill(l)
-
-
-def parse(line):
-    arg, val = line.split(' = ')
-    if arg == 'mask':
-        return arg, val
-    else:
-        return int(arg[4:-1]), val
-
-
-def parse_input(input_str):
-    return list(map(parse, input_str.splitlines()))
 
 
 if __name__ == '__main__':
