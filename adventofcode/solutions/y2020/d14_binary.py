@@ -44,10 +44,10 @@ def solve_second(code):
         addr = bitstring(instr, len(mask))
         template = ''
         for mask_bit, addr_bit in zip(mask, addr):
-            charmap = {'0': addr_bit, '1': '1', 'X': '{}'}
+            charmap = {'0': addr_bit, '1': '1', 'X': '%s'}
             template += charmap[mask_bit]
         for fill in product('01', repeat=mask.count('X')):
-            addr = int(template.format(*fill), 2)
+            addr = int(template % fill, 2)
             mem[addr] = val
     return sum(mem.values())
 
