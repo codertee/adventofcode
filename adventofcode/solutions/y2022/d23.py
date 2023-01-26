@@ -59,11 +59,10 @@ def solve_first(elves):
     for _ in range(10):
         simulate(elves, checks)
         checks.rotate(-1)
-    rows = [e[0] for e in elves]
-    cols = [e[1] for e in elves]
-    min_r, max_r = min(rows), max(rows) + 1
-    min_c, max_c = min(cols), max(cols) + 1
-    return (max_r - min_r) * (max_c - min_c) - len(elves)
+    rows, cols = zip(*elves)
+    delta_rows = max(rows) - min(rows) + 1
+    delta_cols = max(cols) - min(cols) + 1
+    return delta_rows * delta_cols - len(elves)
 
 
 @aoc_timer(2, 23, 2022)
