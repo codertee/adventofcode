@@ -1,4 +1,4 @@
-from itertools import product
+from itertools import product, count
 
 from adventofcode.inputs import get_input
 from adventofcode.utils import aoc_timer
@@ -33,10 +33,9 @@ def rotate(grid):
 def solve_first(grid):
     count = 0
     for _ in range(4):
-        for row in grid:
-            tallest = row[0]
+        for tallest, *rest in grid:
             count += tallest.seen()
-            for tree in row[1:]:
+            for tree in rest:
                 if tallest == MAX_HEIGHT:
                     break
                 if tree > tallest:
@@ -49,14 +48,12 @@ def solve_first(grid):
 def count_trees(r, c, dr, dc, grid):
     height = grid[r][c]
     boundary = len(grid[0]) - 1
-    count = 0
-    while True:
+    for i in count():
         r, c = r + dr, c + dc
         if r < 0 or c < 0 or r > boundary or c > boundary:
-            return count
-        count += 1
+            return i
         if grid[r][c] >= height:
-            return count
+            return i + 1
 
 
 @aoc_timer(2, 8, 2022)
