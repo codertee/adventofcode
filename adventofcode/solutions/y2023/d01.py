@@ -5,7 +5,7 @@ from adventofcode.inputs import get_input
 from adventofcode.utils import aoc_timer
 
 
-SPELLED = "one, two, three, four, five, six, seven, eight, nine".split(', ')
+SPELLED = "one, two, three, four, five, six, seven, eight, nine".split(", ")
 TRANSFORM = {d: d for d in string.digits}
 TRANSFORM.update(dict(zip(SPELLED, string.digits[1:])))
 
