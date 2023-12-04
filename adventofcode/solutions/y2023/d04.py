@@ -33,6 +33,6 @@ def solve_second(cards: dict[int, int]):
 
 
 if __name__ == '__main__':
-    pairs = parse_input(get_input(4, year=2023))
-    solve_first(pairs)
-    solve_second(pairs)
+    cards = parse_input(get_input(4, year=2023))
+    solve_first(cards)
+    solve_second(cards)
