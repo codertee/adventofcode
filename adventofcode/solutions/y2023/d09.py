@@ -14,12 +14,12 @@ def parse_input(input_str):
     return list(map(parse_line, input_str.splitlines()))
 
 
-def predict(history: list[int], getter=itemgetter(-1), factor=1):
-    fills = [getter(history)]
+def predict(history: list[int]):
+    prediction = history[-1]
     while any(history):
         history = [other - one for one, other in pairwise(history)]
-        fills.append(getter(history))
-    return reduce(lambda a, b: b + factor * a, reversed(fills))
+        prediction += history[-1]
+    return prediction
 
 
 @aoc_timer(1, 9, 2023)
@@ -29,7 +29,7 @@ def solve_first(histories):
 
 @aoc_timer(2, 9, 2023)
 def solve_second(histories):
-    return sum(predict(h, itemgetter(0), -1) for h in histories)
+    return sum(predict(h[::-1]) for h in histories)
 
 
 if __name__ == "__main__":
