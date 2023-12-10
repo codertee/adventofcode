@@ -15,11 +15,10 @@ def parse_input(input_str):
 
 
 def predict(history: list[int], getter=itemgetter(-1), factor=1):
-    seq = history
     fills = [getter(history)]
-    while any(seq):
-        seq = [other - one for one, other in pairwise(seq)]
-        fills.append(getter(seq))
+    while any(history):
+        history = [other - one for one, other in pairwise(history)]
+        fills.append(getter(history))
     return reduce(lambda a, b: b + factor * a, reversed(fills))
 
 
