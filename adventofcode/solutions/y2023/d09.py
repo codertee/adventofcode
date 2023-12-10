@@ -5,7 +5,7 @@ from adventofcode.utils import aoc_timer
 
 
 def parse_input(input_str):
-    return [map(int, line) for line in input_str.splitlines()]
+    return [list(map(int, line.split())) for line in input_str.splitlines()]
 
 
 def predict(history: list[int]):
