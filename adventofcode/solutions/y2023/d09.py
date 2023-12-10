@@ -1,17 +1,11 @@
-from functools import reduce
 from itertools import pairwise
-from operator import itemgetter
 
 from adventofcode.inputs import get_input
 from adventofcode.utils import aoc_timer
 
 
-def parse_line(line: str):
-    return list(map(int, line.split()))
-
-
 def parse_input(input_str):
-    return list(map(parse_line, input_str.splitlines()))
+    return [map(int, line) for line in input_str.splitlines()]
 
 
 def predict(history: list[int]):
