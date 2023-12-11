@@ -37,22 +37,15 @@ def parse_input(input_str):
             return grid, coords, extents
 
 
-def starting_orientation(grid, start):
-    for facing in DIRS:
-        coords = start + facing
-        if (facing, grid[coords]) in STEP:
-            return facing
-
-
 def follow_loop(grid, start):
-    delta = starting_orientation(grid, start)
-    current = start + delta
+    direction = next(filter(lambda d: (d, grid[start + d]) in STEP, DIRS))
+    coords = start + direction
     loop = {start: grid[start]}
-    while current != start:
-        part = grid[current]
-        loop[current] = part
-        delta = STEP[delta, part]
-        current += delta
+    while coords != start:
+        part = grid[coords]
+        loop[coords] = part
+        direction = STEP[direction, part]
+        coords += direction
     return loop
 
 
