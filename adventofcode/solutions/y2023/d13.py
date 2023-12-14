@@ -11,17 +11,14 @@ def parse_input(input_str):
 
 def symmetric_idx(grid: list[str], allowed_diffs=0):
     for i in range(1, len(grid)):
-        up, down = grid[:i][::-1], grid[i:]
-        char_diffs = 0
-        for line_pair in zip(up, down):
-            char_diffs += sum(starmap(ne, zip(*line_pair)))
-        if char_diffs == allowed_diffs:
+        up, down = "".join(grid[:i][::-1]), "".join(grid[i:])
+        if sum(starmap(ne, zip(up, down))) == allowed_diffs:
             return i
     return 0
 
 
 def rotate(grid):
-    return tuple(''.join(c[::-1]) for c in zip(*grid))
+    return tuple("".join(c[::-1]) for c in zip(*grid))
 
 
 @aoc_timer(1, 13, 2023)
