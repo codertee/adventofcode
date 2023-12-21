@@ -48,7 +48,7 @@ def split_ranges(flows, ranges, label):
         yield prod(end - start + 1 for start, end in ranges); return
     elif label == "R":
         yield 0; return
-    *rules, last = flows[label]
+    *rules, default = flows[label]
     for idx, op, amt, target in rules:
         start, end = ranges[idx]
         if op == "<":
@@ -60,7 +60,7 @@ def split_ranges(flows, ranges, label):
         if nxt:
             nxt_ranges = ranges[:idx] + [nxt] + ranges[idx + 1:]
             yield from split_ranges(flows, nxt_ranges, target)
-    yield from split_ranges(flows, ranges, last)
+    yield from split_ranges(flows, ranges, default)
 
 
 @aoc_timer(2, 19, 2023)
